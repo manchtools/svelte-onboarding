@@ -4,8 +4,10 @@
 	export let y;
 	export let left = true;
 	export let top = true;
+	
 	let dontShowAgain = false;
-
+	let selfHeight = 0;
+	let selfWidth = 0;
 	import { onboardSteps } from "./store";
 	import { page } from "$app/stores";
 	import Cookies from "js-cookie";
@@ -13,15 +15,15 @@
 </script>
 
 {#if $onboardSteps.currentStep === step && dontShow.indexOf($page.route.id) === -1}
-	<div
+	<div	bind:clientHeight={selfHeight} bind:clientWidth={selfWidth}
 		id={$page.route.id + "-oobe-" + step}
 		class="onboard-step arrow-{top? "top": "bottom"}-{left? "left": "right"}"
 		style="
 		{
-			top? `top: ${y +10}px;` : `bottom: ${y +10}px;`
+			top? `top: ${y +10}px;` : `top: ${y -15 -selfHeight}px;`
 		}
 		{
-			left? `left: ${x}px;` : `right: ${x}px;`}
+			left? `left: ${x}px;` : `left: ${x - selfWidth}px;`}
 		"
 	>
 	<svg on:click={() => onboardSteps.skipSteps(dontShowAgain)} class="close-icon"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="12" cy="12" r="10" />  <line x1="15" y1="9" x2="9" y2="15" />  <line x1="9" y1="9" x2="15" y2="15" /></svg>
@@ -53,7 +55,7 @@
 			</div>
 			<div class="dont-show">
 				<input type="checkbox" bind:checked={dontShowAgain} />
-				<label for="dontShowAgain">Don't show again</label>
+				<small for="dontShowAgain">Don't show again</small>
 			</div>
 		</div>
 	</div>
@@ -152,7 +154,7 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 25rem;
-		padding: 1rem;
+		padding: 1.2rem;
 		border-style: solid;
 		border-radius: 0.35rem;
 		-webkit-box-sizing: border-box;
