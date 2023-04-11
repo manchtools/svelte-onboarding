@@ -39,19 +39,27 @@ function manageSteps() {
 		skipSteps: (dontShowAgain = false) => {
 			update((obj) => {
 				if (dontShowAgain) {
-					const currentPath = get(page).route.id;
+					const currentPath = JSON.stringify( {path:get(page).route.id, date: new Date().toLocaleDateString()})
 					let cookieValue = Cookies.get("oobe-skip");
 
 					if (!cookieValue) {
-						cookieValue = [currentPath].toString();
+						cookieValue = [currentPath];
 					} else {
-						cookieValue = cookieValue.split(",");
+						cookieValue = JSON.parse(cookieValue)
+				
 						cookieValue.push(currentPath);
 					}
 
-					Cookies.set("oobe-skip", cookieValue, { expires: 365 });
+					Cookies.set("oobe-skip", JSON.stringify(cookieValue), { expires: 365 });
 				}
 				obj.currentStep = -1;
+				return obj;
+			});
+		},
+		invalidateRoute: () => {
+			update((obj) => {
+				let currentRoute = get(page).route.id
+				obj.currentStep = 0;
 				return obj;
 			});
 		},
