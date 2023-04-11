@@ -2,6 +2,8 @@
 	export let step;
 	export let x;
 	export let y;
+	export let left = true;
+	export let top = true;
 	let dontShowAgain = false;
 
 	import { onboardSteps } from "./store";
@@ -13,11 +15,16 @@
 {#if $onboardSteps.currentStep === step && dontShow.indexOf($page.route.id) === -1}
 	<div
 		id={$page.route.id + "-oobe-" + step}
-		class="onboard-step"
+		class="onboard-step arrow-{top? "top": "bottom"}-{left? "left": "right"}"
 		style="
-		top: {y}px;
-		left: {x}px;"
+		{
+			top? `top: ${y +10}px;` : `bottom: ${y +10}px;`
+		}
+		{
+			left? `left: ${x}px;` : `right: ${x}px;`}
+		"
 	>
+	<svg on:click={() => onboardSteps.skipSteps(dontShowAgain)} class="close-icon"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="12" cy="12" r="10" />  <line x1="15" y1="9" x2="9" y2="15" />  <line x1="9" y1="9" x2="15" y2="15" /></svg>
 		<small class="page-nums">
 			{step + 1}/{$onboardSteps.steps.length}
 		</small>
@@ -29,7 +36,7 @@
 					class:hidden={$onboardSteps.currentStep === 0}>Previous</button
 				>
 
-				<button on:click={() => onboardSteps.skipSteps(dontShowAgain)}>Skip</button>
+				
 				{#if $onboardSteps.steps.length - 1 !== step}
 					<button
 						on:click={() => onboardSteps.nextStep()}
@@ -59,14 +66,25 @@
 		--bg-light: #fff;
 		--text-light: #f5f5f5;
 		--text-dark: #171717;
+		--text-dark-muted: #4a4a4a;
+		--text-light-muted: #b3b3b3;
 		--border-light: #f5f5f5;
 		--border-dark: #171717;
+	}
+	.close-icon{
+		position: absolute;
+		cursor: pointer;
+		right:4px;
+		top:4px;
+		width:20px;
+		height:20px;
 	}
 	.page-nums {
 		position: absolute;
 		width: fit-content;
+		font-size: small;
 		right: 4px;
-		bottom: 4px;
+		bottom: 2px;
 	}
 	.dont-show {
 		display: flex;
@@ -98,6 +116,10 @@
 		font-size: small;
 	}
 	@media (prefers-color-scheme: light) {
+		.page-nums{
+		
+			color: var(--text-dark-muted);
+		}
 		button {
 			color: var(--text-dark);
 			border-color: var(--border-dark);
@@ -109,6 +131,10 @@
 		}
 	}
 	@media (prefers-color-scheme: dark) {
+		.page-nums{
+		
+			color: var(--text-light-muted);
+		}
 		button {
 			color: var(--text-light);
 			border-color: var(--border-light);
@@ -136,4 +162,41 @@
 		box-sizing: border-box;
 		z-index: 99999;
 	}
+	.arrow-bottom-left:after {
+content: "";
+position: absolute;
+bottom: -10px;
+left: 5px;
+border-width: 15px 15px 0;
+border-style: solid;
+border-color: black transparent;
+}
+.arrow-bottom-right:after {
+content: "";
+position: absolute;
+bottom: -10px;
+right: 5px;
+border-width: 15px 15px 0;
+border-style: solid;
+border-color: black transparent;
+}
+.arrow-top-left:after {
+content: "";
+position: absolute;
+top: -10px;
+left: 5px;
+border-width: 0 15px 15px;
+border-style: solid;
+border-color: black transparent;
+}
+
+.arrow-top-right:after {
+content: "";
+position: absolute;
+top: -10px;
+right: 5px;
+border-width: 0 15px 15px;
+border-style: solid;
+border-color: black transparent;
+}
 </style>
