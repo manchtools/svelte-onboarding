@@ -12,11 +12,21 @@
 	import { onboardSteps } from "./store";
 	import { page } from "$app/stores";
 	import Cookies from "js-cookie";
-	const dontShow = Cookies.get("oobe-skip")?.split(",") || [];
-
+	let dontShow = Cookies.get("oobe-skip")|| [];
+	let currentPageCookie; 
+	if (dontShow.length > 0){
+		dontShow = JSON.parse(dontShow)
+		
+		let tmp = dontShow[dontShow.findIndex(entry =>  JSON.parse(entry).path === $page.route.id)]
+		
+		if(tmp){
+		
+			currentPageCookie = JSON.parse(tmp).path
+			
+		}
+	}
 	$:if(x +selfWidth > window.innerWidth ){
 		x = element.getBoundingClientRect().right;
-		console.log(x)
 		left = false;
 	}
 	$: if(y - 100 > window.innerHeight){
@@ -24,9 +34,10 @@
 		top = false;
 
 	}
+	
 </script>
 
-{#if $onboardSteps.currentStep === step && dontShow.indexOf($page.route.id) === -1}
+{#if $onboardSteps.currentStep === step && currentPageCookie !== $page.route.id}
 	<div	bind:clientHeight={selfHeight} bind:clientWidth={selfWidth}
 		id={$page.route.id + "-oobe-" + step}
 		class="onboard-step arrow-{top? "top": "bottom"}-{left? "left": "right"}"
