@@ -56,7 +56,7 @@
 <style>
 	:global(:root) {
 		--bg-dark: #171717;
-		--bg-light: #f5f5f5;
+		--bg-light: #fff;
 		--text-light: #f5f5f5;
 		--text-dark: #171717;
 		--border-light: #f5f5f5;
