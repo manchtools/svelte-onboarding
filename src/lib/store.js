@@ -59,7 +59,19 @@ function manageSteps() {
 		invalidateRoute: () => {
 			update((obj) => {
 				let currentRoute = get(page).route.id
-				obj.currentStep = 0;
+				let cookieValue = Cookies.get("oobe-skip");
+				if (cookieValue){
+					let tmpJSON = JSON.parse(cookieValue)
+					
+					let index = tmpJSON.findIndex(entry =>  JSON.parse(entry).path === currentRoute)
+					
+					if(index !== -1){
+						
+						tmpJSON.splice(index, 1)
+						Cookies.set("oobe-skip", JSON.stringify(tmpJSON), { expires: 365 });
+						
+					}
+				}
 				return obj;
 			});
 		},
