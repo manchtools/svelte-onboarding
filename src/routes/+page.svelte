@@ -1,5 +1,5 @@
 <script>
-	import { onboardingSteps } from "$lib/onboarding";
+	import onboardingSteps from "$lib/onboarding";
 	import { onboardSteps } from "$lib/store";
 
 	onboardSteps.setSteps([
