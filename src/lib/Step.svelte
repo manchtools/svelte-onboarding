@@ -1,9 +1,10 @@
 <script>
 	export let step;
-	export let x;
-	export let y;
-	export let left = true;
-	export let top = true;
+	export let element;
+	let x = element.getBoundingClientRect().left;
+	let y = element.getBoundingClientRect().bottom;
+	let left = true;
+	let top = true;
 	
 	let dontShowAgain = false;
 	let selfHeight = 0;
@@ -12,6 +13,17 @@
 	import { page } from "$app/stores";
 	import Cookies from "js-cookie";
 	const dontShow = Cookies.get("oobe-skip")?.split(",") || [];
+
+	$:if(x +selfWidth > window.innerWidth ){
+		x = element.getBoundingClientRect().right;
+		console.log(x)
+		left = false;
+	}
+	$: if(y - 100 > window.innerHeight){
+		y = element.getBoundingClientRect().top;
+		top = false;
+
+	}
 </script>
 
 {#if $onboardSteps.currentStep === step && dontShow.indexOf($page.route.id) === -1}
@@ -23,7 +35,7 @@
 			top? `top: ${y +10}px;` : `top: ${y -15 -selfHeight}px;`
 		}
 		{
-			left? `left: ${x}px;` : `left: ${x - selfWidth}px;`}
+			left? `left: ${x}px;` : `left: ${x -selfWidth}px;`}
 		"
 	>
 	<svg on:click={() => onboardSteps.skipSteps(dontShowAgain)} class="close-icon"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="12" cy="12" r="10" />  <line x1="15" y1="9" x2="9" y2="15" />  <line x1="9" y1="9" x2="15" y2="15" /></svg>
