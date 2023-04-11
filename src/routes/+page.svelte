@@ -20,4 +20,4 @@
 	dolor sit amet.
 </p>
 <div style="margin-top: 20%;" use:onboardingSteps={1}>Kartoffeln</div>
-<div style="margin-top: 150%; margin-left:20%" use:onboardingSteps={2}>Erbsen</div>
+<span style="margin-top: 150%" use:onboardingSteps={2}>Erbsen</span>
