@@ -1,6 +1,7 @@
 {
-	"name": "svelte-onboarding",
-	"version": "0.0.1",
+	"name": "@manchtools/svelte-onboarding",
+	"version": "0.1.0",
+	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -11,6 +12,28 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/manchtools/svelte-onboarding.git"
+	},
+	"keywords": [
+		"svelte",
+		"cookie",
+		"cookies",
+		"banner",
+		"consent",
+		"svelte-onboarding",
+		"onboarding",
+		"user"
+	],
+	"bugs": {
+		"url": "https://github.com/manchtools/svelte-onboarding/issues",
+		"email": "paul.dotterer@icloud.com"
+	},
+	"author": {
+		"name": "Paul Dotterer",
+		"email": "paul.dotterer@icloud.com"
 	},
 	"exports": {
 		".": {
