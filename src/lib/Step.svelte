@@ -12,6 +12,7 @@
 	import { onboardSteps } from "./store";
 	import { page } from "$app/stores";
 	import Cookies from "js-cookie";
+	import { fade } from 'svelte/transition';
 	let dontShow = Cookies.get("oobe-skip")|| [];
 	let currentPageCookie; 
 	if (dontShow.length > 0){
@@ -29,7 +30,7 @@
 		x = element.getBoundingClientRect().right;
 		left = false;
 	}
-	$: if(y - 100 > window.innerHeight){
+	$: if(y + selfHeight > window.innerHeight){
 		y = element.getBoundingClientRect().top;
 		top = false;
 
@@ -38,12 +39,12 @@
 </script>
 
 {#if $onboardSteps.currentStep === step && currentPageCookie !== $page.route.id}
-	<div	bind:clientHeight={selfHeight} bind:clientWidth={selfWidth}
+	<div in:fade={{duration:250}} bind:clientHeight={selfHeight} bind:clientWidth={selfWidth}
 		id={$page.route.id + "-oobe-" + step}
 		class="onboard-step arrow-{top? "top": "bottom"}-{left? "left": "right"}"
 		style="
 		{
-			top? `top: ${y +10}px;` : `top: ${y -15 -selfHeight}px;`
+			top? `top: ${y +10}px;` : `top: ${y -10 -selfHeight}px;`
 		}
 		{
 			left? `left: ${x}px;` : `left: ${x -selfWidth}px;`}
@@ -53,7 +54,9 @@
 		<small class="page-nums">
 			{step + 1}/{$onboardSteps.steps.length}
 		</small>
-		{$onboardSteps.steps[step]}
+		<div class="step-text">
+			{$onboardSteps.steps[step]}
+		</div>
 		<div>
 			<div class="button-group">
 				<button
@@ -68,11 +71,11 @@
 						class:hidden={$onboardSteps.steps.length - 1 === step}>Next</button
 					>
 				{:else}
-					<button
+					<button class="success"
 						on:click={() => {
 							dontShowAgain = true;
 							onboardSteps.skipSteps(dontShowAgain);
-						}}>Finish</button
+						}}>Done</button
 					>
 				{/if}
 			</div>
@@ -89,16 +92,21 @@
 	:global(:root) {
 		--bg-dark: #171717;
 		--bg-light: #fff;
+		
 		--text-light: #f5f5f5;
 		--text-dark: #171717;
+		--text-success: #00b300;
+		
 		--text-dark-muted: #4a4a4a;
 		--text-light-muted: #b3b3b3;
 		--border-light: #f5f5f5;
 		--border-dark: #171717;
+		--border-success: #00b300;
 	}
 	.close-icon{
 		position: absolute;
 		cursor: pointer;
+		
 		right:4px;
 		top:4px;
 		width:20px;
@@ -128,6 +136,9 @@
 		gap: 0.5rem;
 		justify-content: space-between;
 	}
+	.step-text{
+		overflow-y: auto;
+	}
 	button {
 		border-width: 1px;
 		border-style: solid;
@@ -139,6 +150,12 @@
 		text-transform: uppercase;
 		border-radius: 0.25rem;
 		font-size: small;
+	}
+
+	button.success{
+		background-color: var(--bg-success);
+		color: var(--text-success);
+		border-color: var(--border-success);
 	}
 	@media (prefers-color-scheme: light) {
 		.page-nums{
@@ -154,6 +171,7 @@
 			color: var(--text-dark);
 			border-color: var(--border-dark);
 		}
+
 	}
 	@media (prefers-color-scheme: dark) {
 		.page-nums{
@@ -169,6 +187,7 @@
 			color: var(--text-light);
 			border-color: var(--border-light);
 		}
+
 	}
 	.onboard-step {
 		border-width: 1px;
@@ -177,6 +196,7 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 25rem;
+		max-height: 20rem;
 		padding: 1.2rem;
 		border-style: solid;
 		border-radius: 0.35rem;
@@ -208,11 +228,12 @@ border-color: black transparent;
 .arrow-top-left:after {
 content: "";
 position: absolute;
-top: -10px;
+top:-10px;
 left: 5px;
 border-width: 0 15px 15px;
 border-style: solid;
-border-color: black transparent;
+border-color: var(--border-dark) transparent;
+
 }
 
 .arrow-top-right:after {
@@ -222,6 +243,6 @@ top: -10px;
 right: 5px;
 border-width: 0 15px 15px;
 border-style: solid;
-border-color: black transparent;
+border-color: var(--border-dark) transparent;
 }
 </style>
