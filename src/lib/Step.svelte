@@ -55,14 +55,12 @@
 
 <style>
 	:global(:root) {
-		--ob-dark-color-bg: #121212;
-		--ob-light-color-bg: #ffffff;
-		--ob-dark-color-text: hsla(0, 0%, 100%, 0.8);
-		--ob-light-color-text: #000000;
-		--ob-dark-color-border: #ffffff;
-		--ob-light-color-border: #000000;
-		--ob-light-color-button-text: #121212;
-		--ob-dark-color-button-text: hsla(0, 0%, 100%, 0.85);
+		--bg-dark: #171717;
+		--bg-light: #f5f5f5;
+		--text-light: #f5f5f5;
+		--text-dark: #171717;
+		--border-light: #f5f5f5;
+		--border-dark: #171717;
 	}
 	.page-nums {
 		position: absolute;
@@ -88,47 +86,41 @@
 		justify-content: space-between;
 	}
 	button {
-		all: unset;
+		border-width: 1px;
+		border-style: solid;
+		background-color: transparent;
 		cursor: pointer;
 		text-align: center;
 		padding: 0.25rem;
-		font-weight: bold;
+		font-weight: semi-bold;
 		text-transform: uppercase;
 		border-radius: 0.25rem;
 		font-size: small;
 	}
 	@media (prefers-color-scheme: light) {
 		button {
-			border-width: 1px;
-			border-style: solid;
-			color: var(--ob-light-color-button-text);
+			color: var(--text-dark);
+			border-color: var(--border-dark);
 		}
 		.onboard-step {
-			background-color: var(--ob-light-color-bg);
-			color: var(--ob-light-color-text);
-			border-color: var(--ob-light-color-border);
+			background-color: var(--bg-light);
+			color: var(--text-dark);
+			border-color: var(--border-dark);
 		}
 	}
 	@media (prefers-color-scheme: dark) {
 		button {
-			color: var(--ob-dark-color-button-text);
-			border-width: 1px;
-			border-style: solid;
-		}
-		button:hover {
-			color: var(--ob-dark-color-button-text) !important ;
-			transition: background-color 75ms ease, color 75ms ease;
-			-webkit-transition: background-color 75ms ease, color 75ms ease;
-			-o-transition: background-color 75ms ease, color 75ms ease;
-			-moz-transition: background-color 75ms ease, color 75ms ease;
+			color: var(--text-light);
+			border-color: var(--border-light);
 		}
 		.onboard-step {
-			background-color: var(--ob-dark-color-bg);
-			color: var(--ob-dark-color-text);
-			border-color: var(--ob-dark-color-border);
+			background-color: var(--bg-dark);
+			color: var(--text-light);
+			border-color: var(--border-light);
 		}
 	}
 	.onboard-step {
+		border-width: 1px;
 		position: absolute;
 		font-family: sans-serif;
 		display: flex;
