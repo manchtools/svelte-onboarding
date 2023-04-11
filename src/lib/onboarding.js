@@ -1,13 +1,28 @@
 import Step from './Step.svelte';
 
 export function onboardingSteps(element, step) {
-	const dimensions = element.getBoundingClientRect();
-	console.log(dimensions);
+	let left = true;
+	let top = true
+	let x = element.getBoundingClientRect().left;
+	let y = element.getBoundingClientRect().bottom;
+	
+	
+	if(x +100 > window.innerWidth ){
+		x = element.getBoundingClientRect().right;
+		left = false;
+	}
+	if(y - 100 > window.innerHeight){
+		y = element.getBoundingClientRect().top;
+		top = false;
+
+	}
 	let onboardingComponent = new Step({
 		props: {
 			step,
-			x: dimensions.x,
-			y: dimensions.bottom
+			x: x,
+			y: y,
+			left,
+			top
 		},
 		target: document.body
 	});
